@@ -5,7 +5,7 @@
 [![NPM version](https://img.shields.io/npm/v/express-restful-fileman.svg?style=flat-square)](https://www.npmjs.com/package/express-restful-fileman)
 [![NPM Downloads](https://img.shields.io/npm/dm/express-restful-fileman.svg?style=flat-square&maxAge=43200)](https://www.npmjs.com/package/express-restful-fileman)
 
-A restful express router for manage(upload multi-files or remove files) file on web.
+A restful express router for manage(upload multi-files and remove files) file on web.
 
 ## Usage
 

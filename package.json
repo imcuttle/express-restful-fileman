@@ -2,10 +2,11 @@
   "name": "express-restful-fileman",
   "version": "1.0.0",
   "main": "index.js",
-  "description": "A restful express router for manage(upload multi-files or remove files) file on web.",
+  "description": "A restful express router for manage(upload multi-files and remove files) file on web.",
   "author": "imcuttle",
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "prepublishOnly": "npm test"
   },
   "keywords": [
     "file-man",
