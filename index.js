@@ -21,15 +21,16 @@ function restfulFileManRouter(root, token) {
     res.status(200).json({ code: 200, data })
   }
 
+  const auth = function(req, res, next) {
+    if (!token || req.headers['authorization'] === token) {
+      next()
+    } else {
+      fail(res, 'auth-failed')
+    }
+  }
+
   return new Router()
-    .use(function(req, res, next) {
-      if (!token || req.headers['authorization'] === token) {
-        next()
-      } else {
-        fail(res, 'auth-failed')
-      }
-    })
-    .post('**', upload({ preservePath: true }), function(req, res) {
+    .post('**', auth, upload({ preservePath: true }), function(req, res) {
       let { decompress, force } = req.query
       let isDecompress = decompress === 'true'
       force = force === 'true'
@@ -55,7 +56,7 @@ function restfulFileManRouter(root, token) {
           fail(res, String(err))
         })
     })
-    .delete('**', function(req, res) {
+    .delete('**', auth, function(req, res) {
       let path = req.params[0]
       return fm
         .rm(path)
