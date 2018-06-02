@@ -1,0 +1,42 @@
+{
+  "name": "express-restful-fileman",
+  "version": "1.0.0",
+  "main": "index.js",
+  "description": "A restful express router for manage(upload multi-files or remove files) file on web.",
+  "author": "imcuttle",
+  "scripts": {
+    "test": "jest"
+  },
+  "keywords": [
+    "file-man",
+    "web",
+    "restful",
+    "express-restful-fileman"
+  ],
+  "license": "MIT",
+  "repository": "imcuttle/express-restful-fileman",
+  "devDependencies": {
+    "@types/jest": "^23.0.0",
+    "jest": "^23.1.0",
+    "rimraf": "^2.6.2",
+    "supertest": "^3.1.0"
+  },
+  "dependencies": {
+    "decompress": "^4.2.0",
+    "decompress-tar": "^4.1.1",
+    "decompress-tarbz2": "^4.1.1",
+    "decompress-targz": "^4.1.1",
+    "express": "*",
+    "express-fileupload": "^0.4.0",
+    "file-type": "^8.0.0",
+    "get-stream": "^3.0.0",
+    "mkdirp": "^0.5.1",
+    "pify": "^3.0.0",
+    "yauzl": "^2.9.1"
+  },
+  "jest": {
+    "testMatch": [
+      "**/__test{s,}__/*.(spec|test).{t,j}s{x,}"
+    ]
+  }
+}
