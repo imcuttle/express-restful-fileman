@@ -10,7 +10,7 @@ const { Router } = require('express')
 const nps = require('path')
 const upload = require('express-fileupload')
 
-function restfulFileManRouter(root, token) {
+function restfulFileManRouter(root, { token, enableDelete }) {
   let fm = new FileMan(root)
 
   function fail(res, message) {
@@ -29,7 +29,7 @@ function restfulFileManRouter(root, token) {
     }
   }
 
-  return new Router()
+  let r = new Router()
     .post('**', auth, upload({ preservePath: true }), function(req, res) {
       let { decompress, force } = req.query
       let isDecompress = decompress === 'true'
@@ -56,7 +56,9 @@ function restfulFileManRouter(root, token) {
           fail(res, String(err))
         })
     })
-    .delete('**', auth, function(req, res) {
+
+  if (enableDelete) {
+    r.delete('**', auth, function(req, res) {
       let path = req.params[0]
       return fm
         .rm(path)
@@ -66,6 +68,9 @@ function restfulFileManRouter(root, token) {
           fail(res, String(err))
         })
     })
+  }
+
+  return r
 }
 
 module.exports = restfulFileManRouter

@@ -22,8 +22,8 @@ describe('filemanRouter', function() {
 
   mkdirp.sync(makeFixture('filemanRouter'))
 
-  app.use('/token', filemanRouter(makeFixture('filemanRouter'), 'fake_token'))
-  app.use(filemanRouter(makeFixture('filemanRouter')))
+  app.use('/token', filemanRouter(makeFixture('filemanRouter'), { token: 'fake_token', enableDelete: true }))
+  app.use(filemanRouter(makeFixture('filemanRouter'), { enableDelete: true }))
 
   afterAll(function() {
     rimraf.sync(makeFixture('filemanRouter'))

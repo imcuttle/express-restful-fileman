@@ -20,10 +20,11 @@ app.use('/fileman', fileman(__dirname, 'fake_token'))
 
 ## Options
 
-### `fileman(dirpath: string, token?: string)`
+### `fileman(dirpath: string, { token?: string, enableDelete: boolean })`
 
 * `dirpath` (required): The file man's work directory.
-* `token` (optional): Check request's **authorization header** when token is be setting.
+* `token` (optional): Check request's **authorization header** when token is be setting. (default: null)
+* `enableDelete` (optional): Whether enable the delete's API. (default: false)
 
 ## Web API
 
