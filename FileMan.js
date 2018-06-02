@@ -34,7 +34,11 @@ class FileMan {
   touch(path, data, options = {}) {
     return this.mkdirp(nps.dirname(path)).then(() => {
       if (!options.force && this.exists(path)) {
-        throw new Error('Touch file: ' + path + ' failed, because the file has already existed, please set `force` to overwrite it.')
+        throw new Error(
+          'Touch file: ' +
+            path +
+            ' failed, because the file has already existed, please set `force` to overwrite it.'
+        )
       }
       return pify(fs.writeFile)(this._p(path), data, options)
     })
@@ -46,7 +50,13 @@ class FileMan {
 
   decompress(input, dest, options = {}) {
     if (!options.force && this.exists(dest)) {
-      throw new Error('Decompress failed, because the destination "' + dest + '" has already existed, please set `force` to overwrite it.')
+      return Promise.reject(
+        new Error(
+          'Decompress failed, because the destination "' +
+            dest +
+            '" has already existed, please set `force` to overwrite it.'
+        )
+      )
     }
 
     return decompress(input, this._p(dest))
