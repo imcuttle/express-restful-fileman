@@ -15,7 +15,7 @@ A restful express router for manage(upload multi-files and remove files) file on
 const fileman = require('express-restful-fileman')
 const app = require('express')()
 
-app.use('/fileman', fileman(__dirname, 'fake_token'))
+app.use('/fileman', fileman(__dirname, { token: 'fake_token' }))
 ```
 
 ## Options
