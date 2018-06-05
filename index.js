@@ -29,8 +29,22 @@ function restfulFileManRouter(root, { token, enableDelete }) {
     }
   }
 
-  let r = new Router()
-    .post('**', auth, upload({ preservePath: true }), function(req, res) {
+  function wrap(func) {
+    return function(req, res, next) {
+      try {
+        return func(req, res, next)
+      } catch (err) {
+        console.error(err)
+        fail(res, String(err))
+      }
+    }
+  }
+
+  let r = new Router().post(
+    '**',
+    auth,
+    upload({ preservePath: true }),
+    wrap(function(req, res) {
       let { decompress, force } = req.query
       let isDecompress = decompress === 'true'
       force = force === 'true'
@@ -56,18 +70,23 @@ function restfulFileManRouter(root, { token, enableDelete }) {
           fail(res, String(err))
         })
     })
+  )
 
   if (enableDelete) {
-    r.delete('**', auth, function(req, res) {
-      let path = req.params[0]
-      return fm
-        .rm(path)
-        .then(() => pass(res))
-        .catch(err => {
-          console.error(err)
-          fail(res, String(err))
-        })
-    })
+    r.delete(
+      '**',
+      auth,
+      wrap(function(req, res) {
+        let path = req.params[0]
+        return fm
+          .rm(path)
+          .then(() => pass(res))
+          .catch(err => {
+            console.error(err)
+            fail(res, String(err))
+          })
+      })
+    )
   }
 
   return r

@@ -21,11 +21,13 @@ describe('filemanRouter', function() {
   }
 
   mkdirp.sync(makeFixture('filemanRouter'))
-
   app.use('/token', filemanRouter(makeFixture('filemanRouter'), { token: 'fake_token', enableDelete: true }))
   app.use(filemanRouter(makeFixture('filemanRouter'), { enableDelete: true }))
 
-  afterAll(function() {
+  beforeEach(function() {
+    mkdirp.sync(makeFixture('filemanRouter'))
+  })
+  afterEach(function() {
     rimraf.sync(makeFixture('filemanRouter'))
   })
 
@@ -103,6 +105,7 @@ describe('filemanRouter', function() {
       .attach('0', makeFixture('img.png'))
       .attach('1', makeFixture('img.png'), { filepath: '/awd/asasd/sds.png' })
       .end((err, res) => {
+
         expect(res.body).toEqual({
           code: 502,
           message: 'auth-failed'
@@ -172,5 +175,20 @@ describe('filemanRouter', function() {
         expect(isFile('zip/FileMan.js')).toBeTruthy()
         done()
       })
+  })
+
+  it('should fail when filepath backward', function(done) {
+    let req = () =>
+      request(app)
+        .post('/token/../../noForce?decompress=true')
+        .set('authorization', 'fake_token')
+        .attach('1', makeFixture('img.png'), { filepath: '../../sds.png' })
+
+    req().end((err, res) => {
+      expect(res.body.code).toEqual(502)
+      expect(res.body.message).toMatch(/forward than /)
+
+      done()
+    })
   })
 })

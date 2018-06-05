@@ -24,7 +24,16 @@ class FileMan {
   }
 
   _p(p) {
-    return nps.join(this.root, p)
+    const resolved = nps.join(this.root, p)
+    if (resolved.startsWith(this.root)) {
+      return resolved
+    }
+
+    throw new Error(
+      `The resolved path "${resolved}" is forward than root "${
+        this.root
+      }" path.`
+    )
   }
 
   mkdirp(path, opts) {
@@ -50,12 +59,10 @@ class FileMan {
 
   decompress(input, dest, options = {}) {
     if (!options.force && this.exists(dest)) {
-      return Promise.reject(
-        new Error(
-          'Decompress failed, because the destination "' +
-            dest +
-            '" has already existed, please set `force` to overwrite it.'
-        )
+      return new Error(
+        'Decompress failed, because the destination "' +
+          dest +
+          '" has already existed, please set `force` to overwrite it.'
       )
     }
 
