@@ -44,7 +44,7 @@ Add the files which is belongs path using `multipart/form-data`.
     .end((err, res) => {
       expect(res.body).toEqual({
         code: 200,
-        data: 'ok'
+        data: ['/dir/path/img.png', '/dir/path/asasd/sds.png']
       })
 
       expect(isFile('dir/path/img.png')).toBeTruthy()
@@ -66,7 +66,7 @@ Add the files which is belongs path using `multipart/form-data`.
     .end((err, res) => {
       expect(res.body).toEqual({
         code: 200,
-        data: 'ok'
+        data: ['...paths']
       })
 
       expect(isFile('zip/你好.js')).toBeTruthy()
