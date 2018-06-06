@@ -9,6 +9,7 @@ const decompressTar = require('decompress-tar')
 const decompressTarbz2 = require('decompress-tarbz2')
 const decompressTargz = require('decompress-targz')
 const unzip = require('./unzip')
+const nps = require('path')
 
 function decompress(src, dest) {
   return _decompress(src, dest, {

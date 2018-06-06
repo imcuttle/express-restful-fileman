@@ -66,7 +66,13 @@ class FileMan {
       )
     }
 
-    return decompress(input, this._p(dest))
+    return decompress(input, this._p(dest)).then(files => {
+      let paths = []
+      files.forEach(({ path, type }) => {
+        type === 'file' && paths.push(path)
+      })
+      return paths
+    })
   }
 
   rm(path, options = {}) {

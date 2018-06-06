@@ -10,6 +10,12 @@ const { Router } = require('express')
 const nps = require('path')
 const upload = require('express-fileupload')
 
+function assertPath(path) {
+  if (/(^..\/)|(\/..\/)/.test(path)) {
+    throw new Error(`Fileman forbids path ("${path}") is forward.`)
+  }
+}
+
 function restfulFileManRouter(root, { token, enableDelete }) {
   let fm = new FileMan(root)
 
@@ -48,22 +54,38 @@ function restfulFileManRouter(root, { token, enableDelete }) {
       let { decompress, force } = req.query
       let isDecompress = decompress === 'true'
       force = force === 'true'
-
       let path = req.params[0]
+      assertPath(path)
+
+      let paths = []
       const ps = []
       for (let key in req.files) {
         let { name, data } = req.files[key]
+        assertPath(name)
 
+        let filepath = path
         if (!isDecompress) {
-          ps.push(fm.touch(nps.join(path, name), data, { force }))
+          filepath = nps.join(path, name)
+          ps.push(fm.touch(filepath, data, { force }))
+
+          paths.push(nps.join(req.baseUrl, filepath))
         } else {
-          ps.push(fm.decompress(data, path, { force }))
+          ps.push(
+            fm
+              .decompress(data, filepath, { force })
+              .then(
+                ipaths =>
+                  (paths = paths.concat(
+                    ipaths.map(p => nps.join(req.baseUrl, filepath, p))
+                  ))
+              )
+          )
         }
       }
 
       Promise.all(ps)
         .then(() => {
-          pass(res)
+          pass(res, paths)
         })
         .catch(err => {
           console.error(err)
@@ -78,9 +100,11 @@ function restfulFileManRouter(root, { token, enableDelete }) {
       auth,
       wrap(function(req, res) {
         let path = req.params[0]
+        assertPath(path)
+
         return fm
           .rm(path)
-          .then(() => pass(res))
+          .then(() => pass(res, nps.join(req.baseUrl, path)))
           .catch(err => {
             console.error(err)
             fail(res, String(err))
