@@ -11,7 +11,7 @@ const nps = require('path')
 const upload = require('express-fileupload')
 
 function assertPath(path) {
-  if (/(^..\/)|(\/..\/)/.test(path)) {
+  if (/(^\.\.\/)|(\/\.\.\/)/.test(path)) {
     throw new Error(`Fileman forbids path ("${path}") is forward.`)
   }
 }
