@@ -124,7 +124,7 @@ describe('filemanRouter', function() {
         expect(res.status).toBe(200)
         expect(res.body).toEqual({
           code: 200,
-          data: ['/token/hahah/img.png', '/token/hahah/sasd/sds.png']
+          data: ['/hahah/img.png', '/hahah/sasd/sds.png']
         })
 
         expect(isFile('hahah/img.png')).toBeTruthy()
@@ -143,7 +143,7 @@ describe('filemanRouter', function() {
     req().end((err, res) => {
       expect(res.body).toEqual({
         code: 200,
-        data: ['/token/noForce/sds.png']
+        data: ['/noForce/sds.png']
       })
 
       expect(isFile('noForce/sds.png')).toBeTruthy()
@@ -167,7 +167,7 @@ describe('filemanRouter', function() {
       .end((err, res) => {
         expect(res.body).toEqual({
           code: 200,
-          data: ["/token/zip/FileMan.js", "/token/zip/decompress.js", "/token/zip/filemanRouter.js", "/token/zip/你好.js"]
+          data: ["/zip/FileMan.js", "/zip/decompress.js", "/zip/filemanRouter.js", "/zip/你好.js"]
         })
 
         expect(isFile('zip/你好.js')).toBeTruthy()

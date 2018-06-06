@@ -68,7 +68,7 @@ function restfulFileManRouter(root, { token, enableDelete }) {
           filepath = nps.join(path, name)
           ps.push(fm.touch(filepath, data, { force }))
 
-          paths.push(nps.join(req.baseUrl, filepath))
+          paths.push(filepath)
         } else {
           ps.push(
             fm
@@ -76,7 +76,7 @@ function restfulFileManRouter(root, { token, enableDelete }) {
               .then(
                 ipaths =>
                   (paths = paths.concat(
-                    ipaths.map(p => nps.join(req.baseUrl, filepath, p))
+                    ipaths.map(p => nps.join(filepath, p))
                   ))
               )
           )
@@ -104,7 +104,7 @@ function restfulFileManRouter(root, { token, enableDelete }) {
 
         return fm
           .rm(path)
-          .then(() => pass(res, nps.join(req.baseUrl, path)))
+          .then(() => pass(res, path))
           .catch(err => {
             console.error(err)
             fail(res, String(err))
