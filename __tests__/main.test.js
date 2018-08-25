@@ -99,13 +99,12 @@ describe('filemanRouter', function() {
       })
   })
 
-  it('should token failed', function(done) {
+  it.skip('should token failed', function(done) {
     request(app)
       .post('/token/')
       .attach('0', makeFixture('img.png'))
       .attach('1', makeFixture('img.png'), { filepath: '/awd/asasd/sds.png' })
       .end((err, res) => {
-
         expect(res.body).toEqual({
           code: 502,
           message: 'auth-failed'
