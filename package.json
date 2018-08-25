@@ -9,7 +9,7 @@
     "example:browser-view": "run-p server:browser-view dev:browser-view",
     "server:browser-view": "node browser-view/example/index.js",
     "dist:browser-view": "gojs -b browser-view/view/index.js && rimraf browser-view/dist && mv .dist browser-view/dist",
-    "test": "jest",
+    "test": "NODE_ENV=production jest",
     "prepublishOnly": "npm test",
     "prepublish": "run-p dist:*"
   },
