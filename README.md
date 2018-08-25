@@ -20,11 +20,13 @@ app.use('/fileman', fileman(__dirname, { token: 'fake_token' }))
 
 ## Options
 
-### `fileman(dirpath: string, { token?: string, enableDelete: boolean })`
+### `fileman(dirpath: string, { token?: string, enableDelete?: boolean, browserViewRoute?: string, browserViewOptions?: object })`
 
 * `dirpath` (required): The file man's work directory.
 * `token` (optional): Check request's **authorization header** when token is be setting. (default: null)
 * `enableDelete` (optional): Whether enable the delete's API. (default: false)
+* `browserViewRoute` (optional): The browserView route. (see [BrowserView Middleware](#BrowserView Middleware-(>=v3)))
+* `browserViewOptions` (optional): The browserView Middleware Options. (see [BrowserView Middleware](#BrowserView-Middleware-(>=v3))
 
 ## Web API
 
@@ -81,3 +83,34 @@ Add the files which is belongs path using `multipart/form-data`.
 Remove the files which is belongs path.
 
 eg. `/dir/abc` can clear the `dirpath/dir/abc`.
+
+## BrowserView Middleware (>=v3)
+
+**The Browser Upload UI.**
+
+![](https://i.loli.net/2018/08/25/5b80ea988f18e.png)
+
+### Usage
+
+#### Mix in `restful-fileman`
+
+#### Standalone
+
+```javascript
+const browserView = require('express-restful-fileman/browser-view')
+const express = require('express')
+
+const app = express()
+app.use('/ui', browserView({
+  // options
+}))
+```
+
+### Options
+
+* `serverUrl`: The fileman's server url, eg. `http://example.com/fileman`. (default: `location.origin + location.pathname`)
+* `serverUrlVisible`: Whether the serverUrl input ui control is visible. (default: `false`)
+* `token`: Fileman server's token. (default: `null`)
+* `namespace`: The relative path you want to upload, eg. `root/abc`. (default: `''`) 
+* `force`: see [Web API](#Web-API) (default: `false`)
+* `decompress`: see [Web API](#Web-API) (default: `true`)

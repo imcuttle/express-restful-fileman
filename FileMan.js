@@ -59,10 +59,12 @@ class FileMan {
 
   decompress(input, dest, options = {}) {
     if (!options.force && this.exists(dest)) {
-      return new Error(
-        'Decompress failed, because the destination "' +
-          dest +
-          '" has already existed, please set `force` to overwrite it.'
+      return Promise.reject(
+        new Error(
+          'Decompress failed, because the destination "' +
+            dest +
+            '" has already existed, please set `force` to overwrite it.'
+        )
       )
     }
 

@@ -10,16 +10,27 @@ const { Router } = require('express')
 const nps = require('path')
 const upload = require('express-fileupload')
 
+const browserView = require('./browser-view')
+
 function assertPath(path) {
   if (/(^\.\.\/)|(\/\.\.\/)/.test(path)) {
     throw new Error(`Fileman forbids path ("${path}") is forward.`)
   }
 }
 
-function restfulFileManRouter(root, { token, enableDelete }) {
+function restfulFileManRouter(
+  root,
+  { token, enableDelete, browserViewRoute, browserViewOptions }
+) {
   let fm = new FileMan(root)
 
-  function fail(res, message) {
+  function fail(res, error) {
+    let message = error
+    if (error instanceof Error) {
+      message =
+        process.env.NODE_ENV !== 'production' ? error.stack : error.message
+    }
+
     res.status(502).json({ code: 502, message })
   }
 
@@ -41,7 +52,7 @@ function restfulFileManRouter(root, { token, enableDelete }) {
         return func(req, res, next)
       } catch (err) {
         console.error(err)
-        fail(res, String(err))
+        fail(res, err)
       }
     }
   }
@@ -60,36 +71,44 @@ function restfulFileManRouter(root, { token, enableDelete }) {
       let paths = []
       const ps = []
       for (let key in req.files) {
-        let { name, data } = req.files[key]
-        assertPath(name)
+        const files = Array.isArray(req.files[key])
+          ? req.files[key]
+          : [req.files[key]]
+        files.forEach(({ name, md5, data }) => {
+          name = name || md5
+          assertPath(name)
+          let filepath = path
+          if (!isDecompress) {
+            filepath = nps.join(path, name)
+            ps.push(fm.touch(filepath, data, { force }))
 
-        let filepath = path
-        if (!isDecompress) {
-          filepath = nps.join(path, name)
-          ps.push(fm.touch(filepath, data, { force }))
-
-          paths.push(filepath)
-        } else {
-          ps.push(
-            fm
-              .decompress(data, filepath, { force })
-              .then(
-                ipaths =>
-                  (paths = paths.concat(
-                    ipaths.map(p => nps.join(filepath, p))
-                  ))
-              )
-          )
-        }
+            paths.push(filepath)
+          } else {
+            ps.push(
+              fm
+                .decompress(data, filepath, { force })
+                .then(
+                  ipaths =>
+                    (paths = paths.concat(
+                      ipaths.map(p => nps.join(filepath, p))
+                    ))
+                )
+            )
+          }
+        })
       }
 
       Promise.all(ps)
         .then(() => {
-          pass(res, paths)
+          if (paths && paths.length) {
+            pass(res, paths)
+          } else {
+            fail(res, "Don't find files could be uploaded.")
+          }
         })
         .catch(err => {
           console.error(err)
-          fail(res, String(err))
+          fail(res, err)
         })
     })
   )
@@ -107,9 +126,18 @@ function restfulFileManRouter(root, { token, enableDelete }) {
           .then(() => pass(res, path))
           .catch(err => {
             console.error(err)
-            fail(res, String(err))
+            const msg = err
+
+            fail(res, err)
           })
       })
+    )
+  }
+
+  if (typeof browserViewRoute === 'string') {
+    r.use(
+      browserViewRoute,
+      wrap(browserView(Object.assign({ token }, browserViewOptions)))
     )
   }
 
