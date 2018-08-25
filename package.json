@@ -1,6 +1,6 @@
 {
   "name": "express-restful-fileman",
-  "version": "2.0.5",
+  "version": "3.0.0",
   "main": "index.js",
   "description": "A restful express router for manage(upload multi-files and remove files) file on web.",
   "author": "imcuttle",
