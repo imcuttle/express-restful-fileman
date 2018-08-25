@@ -6,3 +6,4 @@ public/
 /browser-view/www/
 !/browser-view/www/.keep
 !/browser-view/dist/
+.dist/
