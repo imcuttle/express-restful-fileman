@@ -151,7 +151,7 @@ describe('filemanRouter', function() {
       req().end((err, res) => {
         expect(res.body).toEqual({
           code: 502,
-          message: 'Error: Touch file: /noForce/sds.png failed, because the file has already existed, please set `force` to overwrite it.'
+          message: 'Touch file: /noForce/sds.png failed, because the file has already existed, please set `force` to overwrite it.'
         })
 
         done()
