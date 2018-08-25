@@ -25,8 +25,8 @@ app.use('/fileman', fileman(__dirname, { token: 'fake_token' }))
 * `dirpath` (required): The file man's work directory.
 * `token` (optional): Check request's **authorization header** when token is be setting. (default: null)
 * `enableDelete` (optional): Whether enable the delete's API. (default: false)
-* `browserViewRoute` (optional): The browserView route. (see [BrowserView Middleware](#BrowserView Middleware-(>=v3)))
-* `browserViewOptions` (optional): The browserView Middleware Options. (see [BrowserView Middleware](#BrowserView-Middleware-(>=v3))
+* `browserViewRoute` (optional): The browserView route. (see [BrowserView Middleware](#browserview-middleware-v3))
+* `browserViewOptions` (optional): The browserView Middleware Options. (see [BrowserView Middleware](#browserview-middleware-v3))
 
 ## Web API
 
@@ -112,5 +112,5 @@ app.use('/ui', browserView({
 * `serverUrlVisible`: Whether the serverUrl input ui control is visible. (default: `false`)
 * `token`: Fileman server's token. (default: `null`)
 * `namespace`: The relative path you want to upload, eg. `root/abc`. (default: `''`) 
-* `force`: see [Web API](#Web-API) (default: `false`)
-* `decompress`: see [Web API](#Web-API) (default: `true`)
+* `force`: see [Web API](#web-api) (default: `false`)
+* `decompress`: see [Web API](#web-api) (default: `true`)
