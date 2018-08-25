@@ -7,3 +7,4 @@ public/
 !/browser-view/www/.keep
 !/browser-view/dist/
 .dist/
+.entry/
