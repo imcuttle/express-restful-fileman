@@ -18,8 +18,7 @@ app.use(cors()).use(
     token: 'test_tokenlll',
     browserViewRoute: '',
     browserViewOptions: {
-      serverUrlVisible: true,
-      serverUrl: 'https://a.io'
+      serverUrlVisible: false
     }
   })
 )

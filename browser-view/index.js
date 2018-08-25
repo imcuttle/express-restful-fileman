@@ -27,9 +27,7 @@ function browserView(options = {}) {
   }
   router.get('/', handleBrowserView)
   router.get('/index.html', handleBrowserView)
-
-  router.use('/', express.static(join(__dirname, 'dist')))
-
+  // router.use('/', express.static(join(__dirname, 'dist')))
   return router
 }
 
