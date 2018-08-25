@@ -22,11 +22,11 @@ app.use('/fileman', fileman(__dirname, { token: 'fake_token' }))
 
 ### `fileman(dirpath: string, { token?: string, enableDelete?: boolean, browserViewRoute?: string, browserViewOptions?: object })`
 
-* `dirpath` (required): The file man's work directory.
-* `token` (optional): Check request's **authorization header** when token is be setting. (default: null)
-* `enableDelete` (optional): Whether enable the delete's API. (default: false)
-* `browserViewRoute` (optional): The browserView route. (see [BrowserView Middleware](#browserview-middleware-v3))
-* `browserViewOptions` (optional): The browserView Middleware Options. (see [BrowserView Middleware](#browserview-middleware-v3))
+- `dirpath` (required): The file man's work directory.
+- `token` (optional): Check request's **authorization header** when token is be setting. (default: null)
+- `enableDelete` (optional): Whether enable the delete's API. (default: false)
+- `browserViewRoute` (optional): The browserView route. (see [BrowserView Middleware](#browserview-middleware-v3))
+- `browserViewOptions` (optional): The browserView Middleware Options. (see [BrowserView Middleware](#browserview-middleware-v3))
 
 ## Web API
 
@@ -34,7 +34,7 @@ app.use('/fileman', fileman(__dirname, { token: 'fake_token' }))
 
 Add the files which is belongs path using `multipart/form-data`.
 
-* Disable decompress (by default)  
+- Disable decompress (by default)  
   The request path means path of directory, and each file's filename means relative path.
 
   ```javascript
@@ -57,7 +57,7 @@ Add the files which is belongs path using `multipart/form-data`.
 
   Set path to be `dir/?force=true` to guarantee overwriting old file.
 
-- Enable decompress (by append querystring `?decompress=true`)  
+* Enable decompress (by append querystring `?decompress=true`)  
   The request path means path of directory too.
 
   ```javascript
@@ -94,6 +94,24 @@ eg. `/dir/abc` can clear the `dirpath/dir/abc`.
 
 #### Mix in `restful-fileman`
 
+```javascript
+const fileman = require('express-restful-fileman')
+const express = require('express')
+const { join } = require('path')
+
+const app = express()
+app.use(
+  '/fileman',
+  fileman(join(__dirname, 'www'), {
+    browserViewRoute: '', // `null` means disable ui feature.
+    browserViewOptions: {
+      /* options */
+    }
+  })
+)
+// GET: `/fileman` would servers browser UI.
+```
+
 #### Standalone
 
 ```javascript
@@ -101,16 +119,19 @@ const browserView = require('express-restful-fileman/browser-view')
 const express = require('express')
 
 const app = express()
-app.use('/ui', browserView({
-  // options
-}))
+app.use(
+  '/ui',
+  browserView({
+    // options
+  })
+)
 ```
 
 ### Options
 
-* `serverUrl`: The fileman's server url, eg. `http://example.com/fileman`. (default: `location.origin + location.pathname`)
-* `serverUrlVisible`: Whether the serverUrl input ui control is visible. (default: `false`)
-* `token`: Fileman server's token. (default: `null`)
-* `namespace`: The relative path you want to upload, eg. `root/abc`. (default: `''`) 
-* `force`: see [Web API](#web-api) (default: `false`)
-* `decompress`: see [Web API](#web-api) (default: `true`)
+- `serverUrl`: The fileman's server url, eg. `http://example.com/fileman`. (default: `location.origin + location.pathname`)
+- `serverUrlVisible`: Whether the serverUrl input ui control is visible. (default: `false`)
+- `token`: Fileman server's token. (default: `null`)
+- `namespace`: The relative path you want to upload, eg. `root/abc`. (default: `''`)
+- `force`: see [Web API](#web-api) (default: `false`)
+- `decompress`: see [Web API](#web-api) (default: `true`)
