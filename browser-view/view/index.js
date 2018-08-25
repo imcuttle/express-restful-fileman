@@ -60,7 +60,7 @@ class View extends React.Component {
       search: null,
       query: {
         ...obj.query,
-        ...this.local
+        ...this.local.toJSON()
       }
     })
   }
@@ -171,8 +171,7 @@ class View extends React.Component {
 @bindView(View)
 class App extends Root {
   // @storageSync
-  @observable
-  token = ''
+  @observable token = ''
 
   @storageSync
   @observable
@@ -187,8 +186,7 @@ class App extends Root {
   decompress = true
 
   // @storageSync
-  @observable
-  serverUrl = location.origin + location.pathname
+  @observable serverUrl = location.origin + location.pathname
 
   serverUrlVisible = false
 
@@ -213,11 +211,26 @@ class App extends Root {
     Object.assign(this, query)
   }
 
+  toJSON() {
+    const obj = {
+      decompress: this.decompress,
+      force: this.force,
+      namespace: this.namespace,
+      token: this.token
+    }
+    if (this.serverUrlVisible) {
+      obj.serverUrl = this.serverUrl
+    }
+    return obj
+  }
+
   @autorun
   auto() {
     const upload = uppy.getPlugin('XHRUpload')
     Object.assign(upload.opts, {
-      endpoint: `${join(this.serverUrl, this.namespace)}?${stringify(this.query)}`
+      endpoint: `${join(this.serverUrl, this.namespace)}?${stringify(
+        this.query
+      )}`
     })
   }
 
