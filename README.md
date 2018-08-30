@@ -134,4 +134,4 @@ app.use(
 - `token`: Fileman server's token. (default: `null`)
 - `namespace`: The relative path you want to upload, eg. `root/abc`. (default: `''`)
 - `force`: see [Web API](#web-api) (default: `false`)
-- `decompress`: see [Web API](#web-api) (default: `true`)
+- `decompress`: see [Web API](#web-api) (default: `false`)

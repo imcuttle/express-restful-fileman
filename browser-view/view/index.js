@@ -74,6 +74,10 @@ class View extends React.Component {
     })
   }
 
+  handleUploadDir = evt => {
+    // this.uploadDirDom
+  }
+
   render() {
     return (
       <div>
@@ -183,7 +187,10 @@ class App extends Root {
 
   @storageSync
   @observable
-  decompress = true
+  decompress = false
+
+  @observable
+  dirFiles = []
 
   // @storageSync
   @observable serverUrl = location.origin + location.pathname
@@ -208,6 +215,7 @@ class App extends Root {
       query.decompress = query.decompress === 'true'
     }
     delete query.serverUrlVisible
+    delete query.disableUploadDir
     Object.assign(this, query)
   }
 

@@ -12,6 +12,8 @@ import XhrUpload from '@uppy/xhr-upload'
 import Webcam from '@uppy/webcam'
 import Url from '@uppy/url'
 
+import DirUploader from './DirUploader'
+
 export default function register({ endpoint, ...options } = {}) {
   require('uppy/dist/uppy.css')
   const uppy = Uppy(options)
@@ -41,8 +43,7 @@ export default function register({ endpoint, ...options } = {}) {
       getResponseData(responseText, response) {
         let json = JSON.parse(responseText)
         if (json.code === 200) {
-          json.data.forEach(link => {
-          })
+          json.data.forEach(link => {})
         }
       },
       fieldName: 'files[]'
@@ -50,6 +51,9 @@ export default function register({ endpoint, ...options } = {}) {
     .use(Url, {
       target: Dashboard,
       serverUrl: 'https://companion.uppy.io/'
+    })
+    .use(DirUploader, {
+      target: Dashboard
     })
     .use(Webcam, {
       target: Dashboard

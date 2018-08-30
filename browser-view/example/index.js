@@ -7,21 +7,12 @@
 const express = require('express')
 const { join } = require('path')
 const cors = require('cors')
-const fileman = require('../../')
 const browser = require('../')
+const filemanMiddleware = require('./filemanMiddleware')
 
 const app = express()
 
-app.use(cors()).use(
-  '/fileman',
-  fileman(join(__dirname, '../www'), {
-    token: 'test_tokenlll',
-    browserViewRoute: '',
-    browserViewOptions: {
-      serverUrlVisible: false
-    }
-  })
-)
+app.use(cors()).use('/fileman', filemanMiddleware)
 // .use('/bv', browser())
 
 app.listen(8899, () => {
