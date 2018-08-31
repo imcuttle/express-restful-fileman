@@ -51,7 +51,6 @@ module.exports = class DirUploader extends Plugin {
 
     files.forEach(file => {
       try {
-        console.log('file', file)
         this.uppy.addFile({
           source: this.id,
           name: file.webkitRelativePath || file.name,
@@ -99,8 +98,8 @@ module.exports = class DirUploader extends Plugin {
           onChange={this.handleInputChange}
           multiple={restrictions.maxNumberOfFiles !== 1}
           accept={restrictions.allowedFileTypes}
-          directory={true}
-          webkitDirectory={true}
+          directory={""}
+          webkitDirectory={""}
           ref={input => {
             this.dirInput = input
           }}
