@@ -11,7 +11,7 @@
     "dist:browser-view": "gojs -b browser-view/view/index.js && rimraf browser-view/dist && mv .dist browser-view/dist",
     "replace:source": "sed -i '' 's/\"browser-view~@~view~@~index.js.bundle.js/\"\\/\\/unpkg.com\\/express-restful-fileman\\/browser-view\\/dist\\/browser-view~@~view~@~index.js.bundle.js/g' browser-view/dist/index.html",
     "test": "NODE_ENV=production jest",
-    "prepublishOnly": "npm test && npm run replace:source",
+    "prepublishOnly": "npm test && npm run dist:browser-view && npm run replace:source",
     "prepublish": "run-p dist:*"
   },
   "keywords": [
