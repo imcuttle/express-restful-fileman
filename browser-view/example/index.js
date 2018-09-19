@@ -12,9 +12,11 @@ const filemanMiddleware = require('./filemanMiddleware')
 
 const app = express()
 
-app.use(cors()).use('/fileman', filemanMiddleware)
+app.use(cors())
+   .use('/fileman', filemanMiddleware)
+   .use('/fileman', express.static(join(__dirname, '../dist')))
 // .use('/bv', browser())
 
 app.listen(8899, () => {
-  console.log('Server run on port: %d', 8899)
+  console.log('Server run on http://localhost:%d/fileman/', 8899)
 })

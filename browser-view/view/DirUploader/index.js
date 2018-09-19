@@ -48,12 +48,19 @@ module.exports = class DirUploader extends Plugin {
     this.uppy.log('[FileInput] Something selected through input...')
 
     const files = toArray(ev.target.files)
-
     files.forEach(file => {
+      let name = file.name
+      if (file.webkitRelativePath) {
+        name = file.webkitRelativePath
+          .split('/')
+          .slice(1)
+          .join('/')
+        file = new File([file], name, { type: file.type })
+      }
       try {
         this.uppy.addFile({
           source: this.id,
-          name: file.webkitRelativePath || file.name,
+          name,
           type: file.type,
           data: file
         })
@@ -98,8 +105,8 @@ module.exports = class DirUploader extends Plugin {
           onChange={this.handleInputChange}
           multiple={restrictions.maxNumberOfFiles !== 1}
           accept={restrictions.allowedFileTypes}
-          directory={""}
-          webkitDirectory={""}
+          directory={''}
+          webkitDirectory={''}
           ref={input => {
             this.dirInput = input
           }}
