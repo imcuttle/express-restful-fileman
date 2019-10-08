@@ -235,8 +235,12 @@ class App extends Root {
   @autorun
   auto() {
     const upload = uppy.getPlugin('XHRUpload')
+    let url = this.serverUrl.trim()
+    const prefix = url.startsWith('/') ? '/' : ''
+    url = url.replace(/^\/+/, '')
+
     Object.assign(upload.opts, {
-      endpoint: `${join(this.serverUrl, this.namespace)}?${stringify(
+      endpoint: `${prefix}${join(url, this.namespace)}?${stringify(
         this.query
       )}`
     })
