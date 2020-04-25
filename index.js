@@ -18,25 +18,27 @@ function assertPath(path) {
   }
 }
 
+function defaultFail(res, error) {
+  let message = error
+  if (error instanceof Error) {
+    message =
+      process.env.NODE_ENV !== 'production' ? error.stack : error.message
+  }
+
+  res.status(502).json({ code: 502, message })
+}
+
+function defaultPass(res, data = 'ok') {
+  res.status(200).json({ code: 200, data })
+}
+
 function restfulFileManRouter(
   root,
-  { token, enableDelete, browserViewRoute, browserViewOptions }
+  { token, enableDelete, browserViewRoute, browserViewOptions, fail = defaultFail, pass = defaultPass, generateFilename = ({name, md5}) => name || md5 }
 ) {
   let fm = new FileMan(root)
 
-  function fail(res, error) {
-    let message = error
-    if (error instanceof Error) {
-      message =
-        process.env.NODE_ENV !== 'production' ? error.stack : error.message
-    }
 
-    res.status(502).json({ code: 502, message })
-  }
-
-  function pass(res, data = 'ok') {
-    res.status(200).json({ code: 200, data })
-  }
 
   const auth = function(req, res, next) {
     if (!token || req.headers['authorization'] === token) {
@@ -74,8 +76,8 @@ function restfulFileManRouter(
         const files = Array.isArray(req.files[key])
           ? req.files[key]
           : [req.files[key]]
-        files.forEach(({ name, md5, data }) => {
-          name = name || md5
+        files.forEach(({ name, md5, data, ...rest }) => {
+          name = generateFilename({name, md5, data, ...rest})
           assertPath(name)
           let filepath = path
           if (!isDecompress) {

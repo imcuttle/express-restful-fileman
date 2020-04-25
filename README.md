@@ -24,6 +24,9 @@ app.use('/fileman', fileman(__dirname, { token: 'fake_token' }))
 
 - `dirpath` (required): The file man's work directory.
 - `token` (optional): Check request's **authorization header** when token is be setting. (default: null)
+- `pass` (optional): The function for response success data. (default: `(res, data = 'ok') => {res.status(200).json({ code: 200, data })}`)
+- `fail` (optional): The function for response fail data. (default: `(res, error) => {...}`)
+- `generateFilename` (optional): The function for generating storing filename. (default: `({name, md5}) => name || md5`)
 - `enableDelete` (optional): Whether enable the delete's API. (default: false)
 - `browserViewRoute` (optional): The browserView route. (see [BrowserView Middleware](#browserview-middleware-v3))
 - `browserViewOptions` (optional): The browserView Middleware Options. (see [BrowserView Middleware](#browserview-middleware-v3))
